@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- #region Sabio Code - You can Fold this region to remove it from sight -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="referrer" content="unsafe-url" />
+    <meta name="description" content="Sabio Coding Bootcamp" />
+    <meta itemprop="image" content="https://sabio.la/Sabio.png">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+    <link rel="shortcut icon" href="https://sabio.la/Sabio.png">
+    <link rel="icon" type="image/png" href="https://sabio.la/Sabio.png" />
+    <!-- Do Not Change the HTML title or anything between this line and the line with the 💘's -->
+    <title>Events</title>
+    <link href="https://pw.sabio.la/dist/all-site.css" rel="stylesheet" />
+    <script src="https://pw.sabio.la/api/js/site"></script>
+    <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+    <script src="usersService.js"></script>
+    <script src="eventsServices.js"></script>
+
+    <!-- #endregion -->
+    <!-- I 💘 Code, You 💘 Code, We all 💘 Code -->
+
+    <!-- 💡 All your CSS in here -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+<script type="text/template" class="card-group" id="card-template">
+    <div 
+    class="card col-6 m-3" 
+    style="width: 400px; border: 2px solid #66d9ff;">
+        <img 
+        class="card-img-top" 
+        style="width: 100%; height: 40vw; object-fit: cover; margin-top: 12px "
+        id="card-image"
+        src=""
+        alt="Card image">
+
+        <div class="card-name text-center">
+            <h3 class="name" id='card-name'>
+                Description name
+            </h3>
+
+            <h4 class="description" id="card-description">
+                Description Example
+            </h4>
+
+            <h5 class="headline" id="card-headline">
+                Headline Example
+            </h5>
+            
+            <p class="summary" id="card-summary">
+                Summary example
+            </p>
+
+            <p class="startDate" id="startDate">
+                Start Date Example
+            </p>
+
+            <p class="endDate" id="endDate">
+                End Date Example
+            </p>
+           
+            <p class="slug" id="card-slug">
+                Slug Example
+            </p>
+            <p class="statusId" id="statusId">
+                Status Id Example
+            </p>
+            <p class="location" id="location">
+                Location Example
+            </p>
+        </div>
+
+        <div class="card-footer text-center card-buttons">
+            <button class="btn btn-dark" id="update" style="color: #66d9ff">
+                Update
+            </button>
+            <button class="btn btn-dark" id="moreInfo" style="color: #66d9ff">
+                Show More Info
+            </button>
+            <button class="btn btn-dark d-none" id="lessInfo" style="color: #66d9ff">
+                Show Less Info
+            </button>
+        </div>
+    </div>
+</script>
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <div class="container-fluid">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="home" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="people" href="#">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="blogs" href="#">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="techCos" href="#">Tech Co.</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="jobs" href="#">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="events" href="#">Events</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="logout" aria-label="logout">Logout</a>
+            </li>
+
+            <li class="nav-item"></li>
+            <a class="nav-link" id="userNameAndId" aria-label="logout"></a>
+            </li>
+            <li class="nav-item">
+                <img class="rounded" style="margin-top: auto; height: 40px;" id="avatarImg">
+            </li>
+            <div class="d-flex justify-content-center d-none" id="status">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+    </div>
+    </li>
+    </ul>
+    </div>
+
+</nav>
+
+<body class="sabio" data-ins="pw-00"
+    style="background-image: url(https://img.freepik.com/premium-photo/grunge-wall-highly-detailed-textured-background-with-space-your-projects_970631-295.jpg); background-repeat: no-repeat; background-size: cover">
+    >
+    <!-- Do Not Edit or Remove this nav element -->
+    <nav class="d-none do-not-remove navbar navbar-expand-md navbar-dark bg-dark sabio"></nav>
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css">
+
+    <div class="text-center inline">
+        <h1 style="color: #b2ecff;">Events Page</h1>
+        <button id="showForm" type="submit" class="btn btn-dark m-1" style="color:#66d9ff">Add Your Own Event!</button>
+    </div>
+    <div class="container formContainer mt-1 d-none">
+        <div id="formData" class="row">
+            <form class="row g-3 m-1">
+                <div class="col-md-6">
+                    <label for="name" class="form-label" style="color: #66d9ff;">Name</label>
+                    <input type="text" class="form-control" id="name" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="description" class="form-label" style="color: #66d9ff;">Description</label>
+                    <input type="text" class="form-control" id="description" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="headline" class="form-label" style="color: #66d9ff;">Headline</label>
+                    <input type="text" class="form-control" id="headline" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="summary" class="form-label" style="color: #66d9ff;">Summary</label>
+                    <input type="text" class="form-control" id="summary" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="dateStart" class="form-label" style="color: #66d9ff;">Start Date</label>
+                    <input type="date" class="form-control" id="dateStart" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="dateEnd" class="form-label" style="color: #66d9ff;">End Date</label>
+                    <input type="date" class="form-control" id="dateEnd" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="slug" class="form-label" style="color: #66d9ff;">Slug</label>
+                    <input type="text" class="form-control" id="slug" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="statusId" class="form-label" style="color: #66d9ff;">StatusId</label>
+                    <input type="text" class="form-control" id="statusId" value="Active"
+                        style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-6">
+                    <label for="location" class="form-label" style="color: #66d9ff;">Location</label>
+                    <div id="geocoder" class="geocoder"></div>
+                </div>
+                <div class="col-12">
+                    <button id="submit" type="submit" class="btn btn-dark" style="color:#66d9ff">Submit New Company
+                    </button>
+                    <button id="hideForm" type="submit" class="btn btn-dark" style="color:#66d9ff">Hide This
+                        Form</button>
+                    <button id="submitUpdate" type="submit" class="btn btn-dark d-none" style="color:#66d9ff">Submit
+                        Your Event!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container ajax sabio d-none"></div>
+    <div class="container">
+        <div class="row">
+            <div class="row col-9" style="border: 2px solid black;" id="choosenEvent">
+                <h3 class="text-center mb-3" style="color: white;"> Search Pinned Events!</h3>
+                <div id="map" style="width: 60vw; height:60vh;"></div>
+            </div>
+            <div class="col-3" style="border: 2px solid black;" id="upcomingEvents">
+
+            </div>
+        </div>
+
+        <!-- Do Not Edit or Remove this footer element -->
+        <footer class=" d-none container-fluid footer mx-auto  fb-targert sabio">
+        </footer>
+
+        <!--👇🏻 All your JavaScript code goes below here inside this script tag 👇🏻 -->
+        <script id="candidateCode">
+            //*******Startup**********//
+            function startUp() {
+                getCurrentUser()
+                clickHandlers()
+                mapbox(8.4689, 60.4720)
+                getUpcomingEvents(0, 10)
+                // postEvent()
+            }
+            //********FORM DATA******** // 
+            function formData(payload) {
+                var idTechCoToUse = parseInt($("#techCompanyId").val())
+                if (payload) {
+                    $("#headline").val(payload.headline),
+                        $("#summary").val(payload.summary),
+                        $("#name").val(payload.name),
+                        $("#description").val(payload.description),
+                        $("#dateStart").val(payload.dateStart),
+                        $("#dateEnd").val(payload.dateEnd),
+                        $("#location").val(payload.location)
+                    $("#slug").val(payload.slug)
+                    $("#statusId").val(payload.statusId)
+                } else {
+                    return {
+                        name: $("#name").val(),
+                        headline: $("#headline").val(),
+                        description: $("#description").val(),
+                        summary: $("#summary").val(),
+                        slug: $("#slug").val(),
+                        statusId: $("#statusId").val(),
+                        dateStart: $("#dateStart").val(),
+                        dateEnd: $("#dateEnd").val(),
+                        location: $("#location").val(),
+                    }
+                }
+            }
+            //******** POST EVENTS******** // 
+            function postEvent() {
+                payload =
+                {
+                    "statusId": "Active",
+                    "metaData": {
+                        "dateStart": "2024-03-18T23:21:35.416Z",
+                        "dateEnd": "2024-03-18T23:21:35.416Z",
+                        "location": {
+                            "latitude": 48.8584,
+                            "longitude": 2.2945,
+                            "zipCode": "75007",
+                            "address": "Champ de Mars, 5 Av. Anatole France, Paris, France"
+                        }
+                    },
+                    "name": "The Eiffel Tower",
+                    "headline": "It Took 22 Months to Complete.",
+                    "description": "The Eiffel Tower Is Made of Iron.",
+                    "summary": "The Eiffel Tower Has to be Repainted Every 7 Years.",
+                    "slug": "parisrance"
+                }
+                eventsService.postNewEvent(payload).then(onPostSuccess).catch(onPostError)
+            }
+            function onPostSuccess(response) {
+                console.log(response, "Response here")
+            }
+            function onPostError(err) {
+                console.log(err, "Response here")
+            }
+            //******** GET UPCOMING EVENTS******** // 
+            function getUpcomingEvents(pageIndex, pageSize) {
+                eventsService.getUpcomingEventsByPage(pageIndex, pageSize).then(getEventsSuccess).catch(getEventsError)
+            }
+            function getEventsSuccess(response) {
+                console.log(response)
+            }
+            function getEventsError(err) {
+                console.error(err)
+            }
+            //******** GET TEMPLATE******** // 
+            function getTemplate() {
+                return $($("#card-template").html()).clone()
+            }
+            //******** CREATE CARDS******** // 
+            function createCards() {
+                var clone = getTemplate();
+
+                $(clone).find("#card-title").text(payload.name)
+                $(clone).find("#card-pay").text(payload.headline)
+                $(clone).find("#card-summary").text(payload.description)
+                $(clone).find("#card-techCoName").text(payload.summary)
+                $(clone).find("#techCoId").text(payload.slug)
+                $(clone).find("#card-skills").text(payload.statusId)
+                $(clone).find("#card-slug").text(payload.slug)
+                $(clone).find("#card-statusId").text("Active")
+                $(clone).find("#card-description").text(payload.description)
+                return clone;
+            }
+            //*******MAPBOX**********//
+            function mapbox(lng, lat) {
+                mapboxgl.accessToken = 'pk.eyJ1IjoiYnlyb25wYzE4IiwiYSI6ImNscGxmdnV6cDAyMjIya281NjRyNDA3ZngifQ.XGvGdaN7gbMn3wlilWWlew';
+                const map = new mapboxgl.Map({
+                    container: 'map', // container ID
+                    center: [lng, lat], // starting position [lng, lat]
+                    zoom: 5 // starting zoom
+                });
+                // Add the control to the map.
+                const geocoder = new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl
+                });
+                console.log(geocoder)
+                document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+
+            }
+            //*******CLICKHANDLERS**********//
+            function clickHandlers() {
+                $("#logout").on("click", userLogout)
+                $("#people").on("click", () => {
+                    window.location.href = "friends.html"
+                })
+                $("#blogs").on("click", () => {
+                    window.location.href = "blogs.html"
+                })
+                $("#techCos").on("click", () => {
+                    window.location.href = "techCos.html"
+                })
+                $("#jobs").on("click", () => {
+                    window.location.href = "jobs.html"
+                })
+
+                $("#hideForm").on("click", (e) => {
+                    e.preventDefault()
+                    $(".formContainer").addClass("d-none")
+                    $("#hideForm").addClass("d-none")
+                    $("#showForm").removeClass("d-none")
+                });
+                $("#showForm").on("click", (e) => {
+                    e.preventDefault()
+                    $(".formContainer").removeClass("d-none")
+                    $("#hideForm").removeClass("d-none")
+                    $("#showForm").addClass("d-none")
+
+                });
+            }
+            //*******PUTTING ID IN NAVBAR**********//
+            function getById(id) {
+                usersService.getById(id).then(onSuccessgetById).catch(onErrorgetById)
+            }
+            function onSuccessgetById(response) {
+                let imgUrl = response.data.item.avatarUrl
+                $('#avatarImg').attr("src", imgUrl)
+            }
+            function onErrorgetById(err) {
+                console.error(err)
+            }
+            //*******Putting ID in NAVBAR**********//
+            function getCurrentUser() {
+                $('#status').removeClass('d-none')
+                usersService.current().then(onSuccessGetUser).catch(onErrorGetUser)
+            }
+            function onSuccessGetUser(response) {
+                console.log(response)
+                var id = response.data.item.id
+                getById(id)
+                $('#userNameAndId').text(`${response.data.item.id}`)
+                $('#status').addClass('d-none')
+
+            }
+            function onErrorGetUser(err) {
+                console.error(err)
+            }
+            //*******User Logout**********//
+            function userLogout() {
+                console.log("clicked")
+                // e.preventDefault()
+                usersService.userLogout().then(onSuccessLogout).catch(onErrorLogout)
+            }
+            function onSuccessLogout(response) {
+                alert("Logout Successful")
+                window.location.href = "login_2.html"
+                console.log("success", response)
+            }
+            function onErrorLogout(err) {
+                alert("User does not exist :(")
+                console.error(err)
+            }
+
+
+        </script>
+
+        <!-- 🛑 Do Not Write Any Code Below here -->
+</body>
+
+</html>

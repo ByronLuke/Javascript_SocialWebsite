@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- #region Sabio Code - You can Fold this region to remove it from sight -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="referrer" content="unsafe-url" />
+    <meta name="description" content="Sabio Coding Bootcamp" />
+    <meta itemprop="image" content="https://sabio.la/Sabio.png">
+    <link rel="shortcut icon" href="https://sabio.la/Sabio.png">
+    <link rel="icon" type="image/png" href="https://sabio.la/Sabio.png" />
+    <!-- Do Not Change the HTML title or anything between this line and the line with the 💘's -->
+    <title>Friends</title>
+    <link href="https://pw.sabio.la/dist/all-site.css" rel="stylesheet" />
+    <script src="https://pw.sabio.la/api/js/site"></script>
+    <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="friendsService.js"></script>
+    <script src="usersService.js"></script>
+    <!-- #endregion -->
+    <!-- I 💘 Code, You 💘 Code, We all 💘 Code -->
+
+    <!-- 💡 All your CSS in here -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+
+<script type="text/template" class="card-group" id="card-template">
+    <div 
+    class="card col-6 m-3" 
+    style="width: 400px; border: 2px solid #66d9ff;">
+        <img 
+        class="card-img-top" 
+        style="width: 100%; height: 40vw; object-fit: cover; margin-top: 12px"
+        id="card-image"
+        src=""
+        alt="Card image">
+
+        <div class="card-body text-center" style="">
+            <h5 class="title">
+                Card title
+            </h5>
+
+            <p class="summary">
+                This is just a simple card
+                text inside card body
+            </p>
+
+            <p class="headline d-none">
+                Welcome to geeksforgeeks
+            </p>
+
+            <p class="bio d-none">
+                This is just a simple card
+                text inside card body
+            </p>
+            <p class="slug d-none">
+                This is just a simple card
+                text inside card body
+            </p>
+        </div>
+
+        <div class="card-footer text-center card-buttons">
+            <button class="btn btn-dark" id="update" style="color:#66d9ff">
+                Update
+            </button>
+            <button class="btn btn-dark" id="delete" style="color:#66d9ff">
+                Delete
+            </button>
+        </div>
+    </div>
+</script>
+
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <div class="container-fluid">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="home" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="people" href="#">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="blogs" href="#">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="techCos" href="#">Tech Co.</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="jobs" href="#">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="events" href="#">Events</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="logout" aria-label="logout">Logout</a>
+            </li>
+
+            <li class="nav-item"></li>
+            <a class="nav-link" id="userNameAndId" aria-label="logout"></a>
+            </li>
+            <li class="nav-item">
+                <img class="rounded" style="margin-top: auto; height: 40px;" id="avatarImg">
+            </li>
+    </div>
+    </li>
+    </ul>
+    </div>
+
+</nav>
+
+<body class="sabio" data-ins="pw-00"
+    style="background-image: url(https://img.freepik.com/premium-photo/grunge-wall-highly-detailed-textured-background-with-space-your-projects_970631-295.jpg); background-repeat: no-repeat; background-size: cover">
+    <!-- Do Not Edit or Remove this nav element -->
+    <nav class="d-none do-not-remove navbar navbar-expand-md navbar-dark bg-dark sabio"></nav>
+
+    <div class="text-center d-none" id="search">
+        <h1 class="m-4" style="color: #66d9ff;"></h1>
+        <button id="renderAllBtn" class="btn-dark d-none" id="update" style="color:#66d9ff">
+            Show All
+        </button>
+        <button id="addFriendBtn" class="btn-dark d-none" id="update" style="color:#66d9ff">
+            Add Friend
+        </button>
+        <input id="searchInput" type="text" placeholder="Search.." name="search" style="border: 2px solid #66d9ff;">
+        <button id="friendSearch" type="submit"><i class="fa fa-search"></i></button>
+    </div>
+    <div class="d-flex justify-content-center m-3" id="status">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="container formContainer d-none border border-dark mt-3 p-3 h-25">
+        <div id="formData" class="row d-none">
+            <form class="row g-3 m-1">
+                <div class="col-md-6">
+                    <label for="title" class="form-label" style="color: #66d9ff;">Title</label>
+                    <input style="border: 2px solid #66d9ff;" type="text" class="form-control" id="title">
+                </div>
+                <div class="col-md-6">
+                    <label for="slug" class="form-label" style="color: #66d9ff;">Slug</label>
+                    <input type="text" class="form-control" id="slug" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="headline" class="form-label" style="color: #66d9ff;">Headline</label>
+                    <input type="text" class="form-control" id="headline" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="bio" class="form-label" style="color: #66d9ff;">Bio</label>
+                    <input type="text" class="form-control" id="bio" placeholder="" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="summary" class="form-label" style="color: #66d9ff;">Summary</label>
+                    <input type="text" class="form-control" id="summary" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6 d-none">
+                    <label for="status" class="form-label" style="color: #66d9ff;">Status</label>
+                    <input type="text" class="form-control" id="status" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="primaryImage" class="form-label" style="color: #66d9ff;">Primary Image</label>
+                    <input type="text" class="form-control" id="primaryImage" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <button id="submit" type="submit" class="btn btn-dark" style="color:#66d9ff">Submit</button>
+                </div>
+                <div class="submitUpdateBtn col-12 d-none">
+                    <button id="submitUpdate" type="submit" class="btn btn-dark" style="color:#66d9ff">Submit
+                        Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="text-center">
+        <img id="welcomeImg" class="m-2 text-center d-none"
+            SRC="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmw4bG8xcnhkbjZ4NHhuZmgxeGc1c2dvNjl4cWF0YXA5MWt4aW5lcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qcR6H0Xp5EF3E8r7lw/giphy.gif">
+    </div>
+    <div class="container">
+        <div class="row justify-content-center d-none" id="card-row">
+
+        </div>
+    </div>
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    <div class="container ajax sabio d-none"></div>
+
+
+    <!-- Do Not Edit or Remove this footer element -->
+    <footer class=" d-none container-fluid footer mx-auto  fb-targert sabio">
+    </footer>
+
+    <!--👇🏻 All your JavaScript code goes below here inside this script tag 👇🏻 -->
+    <script id="candidateCode">
+        let id;
+        let payload;
+
+        function startUp() {
+            getCurrentUser()
+            clickHandlers()
+            getFriends()
+
+        }
+
+        //*******Click Handlers**********//
+        function clickHandlers() {
+            $("#logout").on("click", userLogout)
+            $("#addFriendBtn").on("click", onAddFriend)
+            $("#submit").on("click", sumbitNewFriend)
+            $("#submitUpdate").on("click", sumbitUpdatedFriend)
+            $(".container").on("click", "#delete", deleteFriend)
+            $(".container").on("click", "#update", updateForm)
+            $("#friendSearch").on("click", searchFriends)
+            $("#renderAllBtn").on("click", showAllFriends)
+            //Navbar Buttons
+            $("#people").on("click", () => {
+                window.location.href = "friends.html"
+            })
+            $("#blogs").on("click", () => {
+                window.location.href = "blogs.html"
+            })
+            $("#techCos").on("click", () => {
+                window.location.href = "techCos.html"
+            })
+            $("#jobs").on("click", () => {
+                window.location.href = "jobs.html"
+            })
+            $("#home").on("click", () => {
+                window.location.href = "homepage.html"
+            })
+
+        }
+        //*******Show all friends**********//
+        function showAllFriends(e) {
+            $("#card-row").empty()
+            $("#welcomeImg").addClass('d-none')
+            $("#renderAllBtn").addClass('d-none')
+            $("#addFriendBtn").removeClass('d-none')
+            friendsService.getByFriendsPage().then(onShowAllFriendsSuccess).catch(onShowAllFriendsError)
+        }
+        function onShowAllFriendsSuccess(response) {
+            response.data.item.pagedItems.forEach(item => {
+                console.log(item)
+                var card = createCard(item)
+                $("#card-row").append(card)
+            })
+
+        }
+        function onShowAllFriendsError(err) {
+            console.log(err)
+        }
+
+        //*******Clone Template**********//
+        function cloneTemplate() {
+            var clone = $($('#card-template').html()).clone()
+            return clone;
+        }
+
+        //*******Create Card**********//
+        function createCard(payload) {
+            var card = cloneTemplate();
+            // if (!payload?.primaryImage?.imageUrl) {
+            //     alert("Image format is incorrect")
+            // } else {
+            card.find(".card-img-top").attr("src", payload.primaryImage.imageUrl || payload.primaryImage)
+            // }
+            card.find(".title").text(payload.title)
+            card.find(".headline").text(payload.headline)
+            card.find(".summary").text(payload.summary)
+            card.find(".bio").text(payload.bio)
+            card.find(".slug").text(payload.slug)
+            card.find('#delete').attr("name", payload.id)
+            card.find('#update').attr("name", payload.id)
+            return card;
+        }
+
+        //*******Search friends**********//
+        function searchFriends(e) {
+            e.preventDefault()
+            $('#card-row').empty()
+            var searchInput = $("#searchInput").val()
+            console.log(searchInput)
+            friendsService.searchFriends(searchInput).then(onSearchFriendsSuccess).catch(onSearchFriendsError)
+        }
+
+        function onSearchFriendsSuccess(response) {
+            $('#renderAllBtn').removeClass('d-none')
+            $('#addFriendBtn').addClass('d-none')
+
+            var Arr = response.data.item.pagedItems
+
+            var getNames = function (peopleAr) {
+                var firstNames = peopleAr.map((person) => {
+                    return {
+                        title: person.title,
+                        summary: person.summary,
+                        bio: person.bio,
+                        headline: person.headline,
+                        title: person.title,
+                        id: person.id,
+                        primaryImage: person.primaryImage,
+                        slug: person.slug
+                    }
+                }
+                )
+                return firstNames
+            }
+            var resultspayload = getNames(Arr)
+            resultspayload.forEach(item => {
+                console.log(item)
+                var card = createCard(item)
+                $("#card-row").append(card)
+            })
+        }
+
+        function onSearchFriendsError(err) {
+            $("#renderAllBtn").removeClass('d-none')
+            $("#welcomeImg").removeClass('d-none')
+            console.log("Error: " + err)
+        }
+
+        //*******Form**********//
+        function formData(payload) {
+            if (payload) {
+                $('#title').val(payload.title)
+                $('#slug').val(payload.slug)
+                $('#headline').val(payload.headline)
+                $('#bio').val(payload.bio)
+                $('#summary').val(payload.summary)
+                $('#primaryImage').val(payload.primaryImage)
+            } else {
+                return {
+                    title: $('#title').val(),
+                    slug: $('#slug').val(),
+                    headline: $('#headline').val(),
+                    bio: $('#bio').val(),
+                    summary: $('#summary').val(),
+                    primaryImage: $('#primaryImage').val(),
+                }
+            }
+        }
+
+        //*******Add Button**********//
+        function onAddFriend(e) {
+            e.preventDefault();
+            $("div#formData").removeClass("d-none")
+            $(".formContainer").removeClass("d-none")
+        }
+
+        //*******Submitting new friends**********//
+        function sumbitNewFriend(e) {
+            $(".formContainer").addClass("d-none")
+            e.preventDefault()
+            var payload = formData()
+            payload.statusId = "Active";
+
+            console.log(payload)
+            friendsService.submitNewFriend(payload).then(submitNewFriendSuccess).catch(submitNewFriendError)
+        }
+        function submitNewFriendSuccess(response) {
+            var friendAdded = createCard(response)
+            $("#card-row").prepend(friendAdded)
+            $("div#formData").addClass("d-none")
+            $(".formContainer").addClass("d-none")
+            // $('input').val('')
+        }
+        function submitNewFriendError(err) {
+            console.error(err)
+        }
+
+        //*******Submitting updated friends**********//
+        function sumbitUpdatedFriend(e) {
+            e.preventDefault()
+            payload = formData()
+            payload.id = id;
+            payload.statusId = "Active"
+            $('input').val('')
+            $("div#formData").addClass("d-none")
+            $(".formContainer").addClass("d-none")
+            friendsService.update(id, payload).then(onSuccessUpdatedFriend).catch(onErrorUpdatedFriend)
+        }
+        function onSuccessUpdatedFriend(response) {
+            var card = $(`button[name='${response.id}']`).closest(".card")
+            card.find('.title').text(response.title)
+            card.find('.summary').text(response.summary)
+            card.find('.bio').text(response.bio)
+            card.find('.slug').text(response.slug)
+            card.find(".card-img-top").attr("src", response.primaryImage.imageUrl)
+
+
+        }
+        function onErrorUpdatedFriend(err) {
+            console.error(err)
+        }
+
+        //*******Update form**********//
+        function updateForm(e) {
+            console.log(e.target)
+            payload = {}
+            id = e.target.name;
+            payload.title = $(e.target).closest(".card").find('.title').text()
+            payload.summary = $(e.target).closest(".card").find('.summary').text()
+            payload.headline = $(e.target).closest(".card").find('.headline').text()
+            payload.bio = $(e.target).closest(".card").find('.bio').text()
+            payload.slug = $(e.target).closest(".card").find('.slug').text()
+            payload.primaryImage = $(e.target).closest(".card").find('.card-img-top').attr('src')
+            $(".submitUpdateBtn").removeClass("d-none")
+            $("#submit").addClass("d-none")
+            $("div#formData").removeClass("d-none")
+            $(".formContainer").removeClass("d-none")
+            formData(payload)
+
+        }
+
+        //*******Deleting friends**********//
+        function deleteFriend(e) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085D6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    id = e.target.id
+                    entitiesService.deleteById(id)
+                        .then(onDeleteMovieSuccess)
+                        .catch(onDeleteMovieError)
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+        function onDeleteSuccess(response) {
+            $(`button[name='${response}']`).closest(".card").remove()
+            console.log(response)
+        }
+        function onDeleteError(err) {
+            console.log(err)
+        }
+
+        //*******Getting friends**********//
+        function getFriends() {
+            friendsService.getByFriendsPage().then(onGetFriendsSuccess).catch(onGetFriendsError)
+        }
+        function onGetFriendsSuccess(response) {
+            response.data.item.pagedItems.forEach(item => {
+                console.log(item)
+                var card = createCard(item)
+                $("#card-row").append(card)
+            })
+
+        }
+        function onGetFriendsError(err) {
+            console.log(err)
+        }
+
+        //*******Putting photo in NAVBAR**********//
+        function getById(id) {
+            usersService.getById(id).then(onSuccessgetById).catch(onErrorgetById)
+        }
+        function onSuccessgetById(response) {
+            let imgUrl = response.data.item.avatarUrl
+            $('#avatarImg').attr("src", imgUrl)
+        }
+        function onErrorgetById(err) {
+            console.error(err)
+        }
+
+        //*******Putting ID in NAVBAR and name in H1**********//
+        function getCurrentUser() {
+            usersService.current().then(onSuccessGetUser).catch(onErrorGetUser)
+        }
+        function onSuccessGetUser(response) {
+            console.log(response)
+            var id = response.data.item.id
+            getById(id)
+            $('#userNameAndId').text(`${response.data.item.name}: ${response.data.item.id}`)
+            $('h1').text(`Welcome to ${response.data.item.name}'s Friends Page!`)
+            $('#addFriendBtn').removeClass('d-none')
+            $('#search').removeClass('d-none')
+            $('.card').removeClass('d-none')
+            $('#status').addClass('d-none')
+            $("#card-row").removeClass('d-none')
+
+        }
+        function onErrorGetUser(err) {
+            console.error(err)
+        }
+
+        //*******User Logout**********//
+        function userLogout() {
+            console.log("clicked")
+            // e.preventDefault()
+            usersService.userLogout().then(onSuccessLogout).catch(onErrorLogout)
+        }
+        function onSuccessLogout(response) {
+            alert("Logout Successful")
+            window.location.href = "login_2.html"
+            console.log("success", response)
+        }
+        function onErrorLogout(err) {
+            alert("User does not exist :(")
+            console.error(err)
+        }
+
+
+    </script>
+    <!-- 🛑 Do Not Write Any Code Below here -->
+</body>
+
+</html>

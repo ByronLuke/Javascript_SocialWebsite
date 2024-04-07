@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- #region Sabio Code - You can Fold this region to remove it from sight -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="referrer" content="unsafe-url" />
+    <meta name="description" content="Sabio Coding Bootcamp" />
+    <meta itemprop="image" content="https://sabio.la/Sabio.png">
+    <link rel="shortcut icon" href="https://sabio.la/Sabio.png">
+    <link rel="icon" type="image/png" href="https://sabio.la/Sabio.png" />
+    <!-- Do Not Change the HTML title or anything between this line and the line with the 💘's -->
+    <title>Jobs</title>
+    <link href="https://pw.sabio.la/dist/all-site.css" rel="stylesheet" />
+    <script src="https://pw.sabio.la/api/js/site"></script>
+    <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="usersService.js"></script>
+    <script src="jobsService.js"></script>
+    <script src="techService.js"></script>
+
+
+    <!-- #endregion -->
+    <!-- I 💘 Code, You 💘 Code, We all 💘 Code -->
+
+    <!-- 💡 All your CSS in here -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+<script type="text/template" class="card-group" id="card-template">
+    <div 
+    class="card col-6 m-3" 
+    style="width: 400px; border: 2px solid #66d9ff;">
+        <img 
+        class="card-img-top" 
+        style="width: 100%; height: 40vw; object-fit: cover; margin-top: 12px "
+        id="card-image"
+        src=""
+        alt="Card image">
+
+        <div class="card-body text-center">
+            <h3 class="techCoName" id='card-techCoName'>
+                This is just a simple card
+                text inside card body
+            </h3>
+
+            <h4 class="title" id="card-title">
+                Card title
+            </h4>
+
+            <h5 class="pay" id="card-pay">
+                This is just a simple card
+                text inside card body
+            </h5>
+            
+            <p class="description" id="card-description">
+                Welcome to geeksforgeeks
+            </p>
+
+            <p class="summary d-none" id="card-summary">
+                Welcome to geeksforgeeks
+            </p>
+
+            <p class="techCoId d-none" id="techCoId">
+                Welcome to geeksforgeeks
+            </p>
+           
+            <p class="skills d-none" id="card-skills">
+                This is just a simple card
+                text inside card body
+            </p>
+            <p class="slug d-none" id="card-slug">
+                This is just a simple card
+                text inside card body
+            </p>
+            <p class="status d-none" id="card-statusId">
+                This is just a simple card
+                text inside card body
+            </p>
+        </div>
+
+        <div class="card-footer text-center card-buttons">
+            <button class="btn btn-dark" id="update" style="color: #66d9ff">
+                Update
+            </button>
+            <button class="btn btn-dark" id="moreInfo" style="color: #66d9ff">
+                Show More Info
+            </button>
+            <button class="btn btn-dark d-none" id="lessInfo" style="color: #66d9ff">
+                Show Less Info
+            </button>
+        </div>
+    </div>
+</script>
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <div class="container-fluid">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="home" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="people" href="#">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="blogs" href="#">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="techCos" href="#">Tech Co.</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="jobs" href="#">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="events" href="#">Events</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="logout" aria-label="logout">Logout</a>
+            </li>
+
+            <li class="nav-item"></li>
+            <a class="nav-link" id="userNameAndId" aria-label="logout"></a>
+            </li>
+            <li class="nav-item">
+                <img class="rounded" style="margin-top: auto; height: 40px;" id="avatarImg">
+            </li>
+            <div class="d-flex justify-content-center d-none" id="status">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+
+<body class="sabio" data-ins="pw-00"
+    style="background-image: url(https://img.freepik.com/premium-photo/grunge-wall-highly-detailed-textured-background-with-space-your-projects_970631-295.jpg); background-repeat: no-repeat; background-size: cover">
+    <!-- Do Not Edit or Remove this nav element -->
+    <nav class="d-none do-not-remove navbar navbar-expand-md navbar-dark bg-dark sabio"></nav>
+
+    <div class="text-center">
+        <h1 class="text-center" style="color: #66d9ff;">Welcome to the Jobs Page</h1>
+        <button id="showForm" type="submit" class="m-2 btn btn-dark" style="color:#66d9ff">Show Add Jobs
+            Form</button>
+        <form id="form" role="search">
+            <input type="search" class="mt-1" id="searchInput" placeholder="Search..."
+                style="border: 2px solid #66d9ff;">
+            <button class="btn btn-dark mb-1" style="color:#66d9ff" id="searchBtn">Search</button>
+            <button class="btn btn-dark mb-1 d-none" style="color:#66d9ff" id="showAllJobs">Show All
+                Jobs</button>
+        </form>
+    </div>
+    </div>
+    <div class="container formContainer mt-1 d-none">
+        <div id="formData" class="row">
+            <form class="row g-3 m-1">
+                <div class="col-md-6">
+                    <label for="title" class="form-label" style="color: #66d9ff;">Title</label>
+                    <input type="text" class="form-control" id="title" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="pay" class="form-label" style="color: #66d9ff;">Pay</label>
+                    <input type="text" class="form-control" id="pay" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="description" class="form-label" style="color: #66d9ff;">Description</label>
+                    <input type="text" class="form-control" id="description" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="summary" class="form-label" style="color: #66d9ff;">Summary</label>
+                    <input type="text" class="form-control" id="summary" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="skills" class="form-label" style="color: #66d9ff;">Skills</label>
+                    <input type="text" class="form-control" id="skills" placeholder="Seperate skills by ', '"
+                        style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label class="mb-2" for="techCos" style="color: #66d9ff;">Tech Company</label>
+                    <select class="form-select" id="techCompanyId" aria-label="Default select example"
+                        style="border: 2px solid #66d9ff;">
+                        <option id="option" selected>Open this select menu</option>
+
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="slug" class="form-label" style="color: #66d9ff;">Slug</label>
+                    <input type="text" class="form-control" id="slug" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="status" class="form-label" style="color: #66d9ff;">Status</label>
+                    <input type="text" class="form-control" id="statusId" value="Active"
+                        style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <button id="submit" type="submit" class="btn btn-dark" style="color:#66d9ff">Submit New Job
+                    </button>
+                    <button id="hideForm" type="submit" class="btn btn-dark" style="color:#66d9ff">Hide Add Jobs
+                        Form</button>
+                    <button id="submitUpdate" type="submit" class="btn btn-dark d-none" style="color:#66d9ff">Submit
+                        Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center" id="card-row">
+
+        </div>
+    </div>
+    <div class="container ajax sabio d-none"></div>
+
+
+    <!-- Do Not Edit or Remove this footer element -->
+    <footer class=" d-none container-fluid footer mx-auto  fb-targert sabio">
+    </footer>
+
+    <!--👇🏻 All your JavaScript code goes below here inside this script tag 👇🏻 -->
+    <script id="candidateCode">
+        let id;
+        function startUp() {
+            getCurrentUser()
+            getTechCos()
+            clickHandlers()
+            getJobs(0, 10)
+            // 85210
+            // job 4 
+            // getJobBySlug("job1slug")
+            // getJobById("85100")
+        }
+        function clickHandlers() {
+            $("#logout").on("click", userLogout)
+            $("#submit").on("click", addJobs);
+            $("#card-row").on("click", "#update", formUpdate);
+            $("#submitUpdate").on("click", updateJobs);
+            $("#searchBtn").on("click", searchJobs);
+            $("#showAllJobs").on("click", getJobs);
+            $("#card-row").on("click", "#moreInfo", moreInfo);
+            $("#card-row").on("click", "#lessInfo", lessInfo);
+
+            $("#hideForm").on("click", (e) => {
+                e.preventDefault()
+                $(".formContainer").addClass("d-none")
+                $("#hideForm").addClass("d-none")
+                $("#showForm").removeClass("d-none")
+            });
+            $("#showForm").on("click", (e) => {
+                e.preventDefault()
+                $(".formContainer").removeClass("d-none")
+                $("#hideForm").removeClass("d-none")
+                $("#showForm").addClass("d-none")
+
+            });
+
+            $("#people").on("click", () => {
+                window.location.href = "friends.html"
+            })
+            $("#blogs").on("click", () => {
+                window.location.href = "blogs.html"
+            })
+            $("#techCos").on("click", () => {
+                window.location.href = "techCos.html"
+            })
+            $("#jobs").on("click", () => {
+                window.location.href = "jobs.html"
+            })
+        }
+
+        //// Search jobs (NEED TO COMPLETE)
+        function searchJobs(e) {
+            e.preventDefault()
+
+            var string = $("#searchInput").val()
+            jobsService.searchJobs(string).then(onSearchSuccess).catch(onSearchError)
+        }
+        function onSearchSuccess(response) {
+            $('#card-row').empty()
+            $("#showAllJobs").removeClass("d-none")
+            console.log(response)
+            var searchArray = response.data.item.pagedItems
+            var mappedArray = searchArray.map((value) => {
+                return {
+                    id: value.id,
+                    slug: value.slug,
+                    statusId: value.statusId,
+                    summary: value.summary,
+                    pay: value.pay,
+                    title: value.title,
+                    description: value.description,
+                    skills: value.skills,
+                    // .map((value) => {
+                    //     return value.name.join()
+                    // }),
+                    techCompanyName: value.techCompany.name,
+                    techCompanyId: value.techCompany.id
+                }
+                return mappedArray
+            })
+            console.log(mappedArray, "array")
+            for (item of mappedArray) {
+                var card = createCard(item)
+                $("#card-row").append(card)
+            }
+        }
+        function onSearchError(err) {
+            Swal.fire({
+                title: "I don't see any jobs with that name?",
+                text: "Maybe try something different",
+                icon: "question"
+            });
+            console.error(err)
+        }
+
+        //// Show more info
+        function moreInfo(e) {
+            e.preventDefault()
+            var card = $(e.target).closest(".card")
+
+            card.find("#techCoId").removeClass("d-none")
+            card.find("#card-skills").removeClass("d-none")
+            card.find("#card-slug").removeClass("d-none")
+            card.find("#card-statusId").removeClass("d-none")
+            card.find("#lessInfo").removeClass("d-none")
+            card.find("#moreInfo").addClass("d-none")
+        }
+        function lessInfo(e) {
+            e.preventDefault()
+            var card = $(e.target).closest(".card")
+
+            card.find("#techCoId").addClass("d-none")
+            card.find("#card-skills").addClass("d-none")
+            card.find("#card-slug").addClass("d-none")
+            card.find("#card-statusId").addClass("d-none")
+            card.find("#lessInfo").addClass("d-none")
+            card.find("#moreInfo").removeClass("d-none")
+
+        }
+
+        //// Getting tech companies and putting them in select
+        function getTechCos() {
+            techService.getTechCompanies().then(getTechCompaniesSuccess).catch(getTechCompaniesError);
+        }
+        function getTechCompaniesSuccess(response) {
+            var techCoArr = response.data.item.pagedItems;
+            for (techCo of techCoArr) {
+                var select = $("#techCompanyId")
+                select.append($(`<option value="${techCo.id}">${techCo.name}</option>`))
+            }
+        }
+        function getTechCompaniesError(err) {
+            console.error(err)
+        }
+
+        //card functions 
+        function getTemplate() {
+            return $($("#card-template").html()).clone()
+        }
+
+        function createCard(payload) {
+            console.log(payload, "Create Card")
+            var clone = getTemplate();
+
+            if ($(clone).find("#card-image").attr("src", payload?.techCompany?.images)) {
+                $(clone).find("#card-image").attr("src", "https://www.fraud-magazine.com/uploadedImages/Fraud_Magazine/Content/Articles/2022/Round%201_InnovationUpdate-514x397.jpg")
+            }
+            $(clone).find("#card-title").text(payload.title)
+            $(clone).attr("id", payload.id)
+            $(clone).find("#card-pay").text(payload.pay)
+            $(clone).find("#card-summary").text(payload.summary)
+            $(clone).find("#card-techCoName").text(payload.techCompanyName || payload.techCompany.name)
+            $(clone).find("#techCoId").text(payload.techCompanyId)
+            $(clone).find("#card-skills").text(payload.skills.map((value) => {
+                return value.name
+            }))
+            $(clone).find("#card-slug").text(payload.slug)
+            $(clone).find("#card-statusId").text("Active")
+            $(clone).find("#card-description").text(payload.description)
+            return clone;
+
+        }
+
+        //*******Getting All Jobs**********//
+        function getJobs(pageIndex, pageSize) {
+            jobsService.getJobsByPage(pageIndex, pageSize).then(OnGetJobsByPageSuccess).catch(OnGetJobsByPageError)
+        }
+        function OnGetJobsByPageSuccess(response) {
+            var payload = response.data.item.pagedItems
+            for (item of payload) {
+                var card = createCard(item)
+                $("#card-row").append(card)
+            }
+        }
+        function OnGetJobsByPageError(err) {
+            console.logerr
+        }
+
+        function formData(payload) {
+
+            var idTechCoToUse = parseInt($("#techCompanyId").val())
+
+            if (payload) {
+                $("#title").val(payload.title),
+                    $("#pay").val(payload.pay),
+                    $("#description").val(payload.description),
+                    $("#summary").val(payload.summary),
+                    $("#slug").val(payload.slug),
+                    $("#statusId").val(payload.statusId),
+                    $("#skills").val(payload.skills)
+                $("#techCompanyId").val(payload.techCoId)
+            } else {
+                return {
+                    title: $("#title").val(),
+                    pay: $("#pay").val(),
+                    description: $("#description").val(),
+                    summary: $("#summary").val(),
+                    slug: $("#slug").val(),
+                    statusId: $("#statusId").val(),
+                    techCompanyId: idTechCoToUse,
+                    techCompanyName: $(`#techCompanyId option[value=${idTechCoToUse}]`).text(),
+                    skills: $("#skills").val().split(', ')
+                }
+
+            }
+        }
+
+        //*******Updating the form**********//
+        function formUpdate(e) {
+            window.scrollTo(0, 0)
+            $("#submitUpdate").removeClass("d-none")
+            $("#submit").addClass("d-none")
+            e.preventDefault();
+            var payload = {};
+            var card = $(e.target).closest(".card")
+            id = card.attr("id")
+
+            payload.title = card.find("#card-title").text()
+            payload.pay = card.find("#card-pay").text()
+            payload.summary = card.find("#card-summary").text()
+            payload.skills = card.find("#card-skills").text()
+            payload.description = card.find("#card-description").text()
+            payload.slug = card.find("#card-slug").text()
+            payload.statusId = "Active"
+            payload.techCompanyName = card.find("#card-techCoName").text()
+            payload.techCoId = card.find("#techCoId").text()
+
+            formData(payload)
+
+            console.log(payload)
+        }
+
+        //*******Updating Jobs**********//
+        function updateJobs(e) {
+            e.preventDefault()
+            payload = formData()
+            payload.id = parseInt(id)
+            console.log(payload, id, "Heeeeere")
+            jobsService.update(id, payload).then(onUpdateSuccess).catch(onUpdateError)
+        }
+        function onUpdateSuccess(response) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Job has been updated!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            $('input').val('')
+            $("#submitUpdate").addClass("d-none")
+            $("#submit").removeClass("d-none")
+            console.log(response, "Success")
+            var card = $(`#${response.id}`).closest('.card')
+            card.find(".techCoName").text(payload.techCompanyName)
+            card.find(".title").text(payload.title)
+            card.find(".pay").text(payload.pay)
+            card.find(".summary").text(payload.summary)
+            card.find(".techCoId").text(payload.techCompanyId)
+            card.find(".skills").text(payload.skills).join(" ,")
+            card.find(".slug").text(payload.slug)
+            card.find("#statusId").text(payload.statusId)
+            id = null;
+        }
+        function onUpdateError(err) {
+            console.log(err)
+        }
+
+        //*******Adding Jobs**********//
+        function addJobs(e) {
+            e.preventDefault()
+            var payload = formData();
+            payload.statusId = "Active"
+            jobsService.submitNewJob(payload).then(onSubmitNewJobSuccess).catch(onSubmitNewJobError)
+        }
+        function onSubmitNewJobSuccess(response) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "New job has been saved",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            $('input').val('')
+            var newJob = createCard(response)
+            $("#card-row").prepend(newJob)
+            console.log("New Job Success")
+            console.log(response, "Success Create Job")
+        }
+        function onSubmitNewJobError(err) {
+            console.log("New Job Error")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Check that form again!"
+            });
+            console.error(err)
+        }
+
+        //*******Get Jobs by slug**********//
+        function getJobBySlug(slug) {
+            jobsService.getBySlug(slug).then(onGetBySlugSuccess).catch(onGetBySlugError)
+        }
+        function onGetBySlugSuccess(response) {
+            console.log(response)
+        }
+        function onGetBySlugError(err) {
+            console.log(err)
+        }
+        //*******Get Jobs by id**********//
+        function getJobById(id) {
+            jobsService.getById(id).then(onGetByIdSuccess).catch(onGetByIdError)
+        }
+        function onGetByIdSuccess(response) {
+            console.log(`Successful search by id: `)
+            console.log(response)
+        }
+        function onGetByIdError(err) {
+            console.log(err)
+        }
+
+        //*******Putting photo in NAVBAR**********//
+        function getById(id) {
+            usersService.getById(id).then(onSuccessgetById).catch(onErrorgetById)
+        }
+        function onSuccessgetById(response) {
+            let imgUrl = response.data.item.avatarUrl
+            $('#avatarImg').attr("src", imgUrl)
+        }
+        function onErrorgetById(err) {
+            console.error(err)
+        }
+        //*******Putting ID in NAVBAR and name in H1**********//
+        function getCurrentUser() {
+            $('#status').removeClass('d-none')
+            usersService.current().then(onSuccessGetUser).catch(onErrorGetUser)
+        }
+        function onSuccessGetUser(response) {
+            console.log(response)
+            var id = response.data.item.id
+            getById(id)
+            $('#userNameAndId').text(`${response.data.item.name}: ${response.data.item.id}`)
+            $('#status').addClass('d-none')
+
+        }
+        function onErrorGetUser(err) {
+            console.error(err)
+        }
+        //*******User Logout**********//
+        function userLogout() {
+            console.log("clicked")
+            // e.preventDefault()
+            usersService.userLogout().then(onSuccessLogout).catch(onErrorLogout)
+        }
+
+        function onSuccessLogout(response) {
+            alert("Logout Successful")
+            window.location.href = "login_2.html"
+            console.log("success", response)
+        }
+
+        function onErrorLogout(err) {
+            alert("User does not exist :(")
+            console.error(err)
+        }
+
+
+    </script>
+    <!-- 🛑 Do Not Write Any Code Below here -->
+</body>
+
+</html>

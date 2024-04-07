@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- #region Sabio Code - You can Fold this region to remove it from sight -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="referrer" content="unsafe-url" />
+    <meta name="description" content="Sabio Coding Bootcamp" />
+    <meta itemprop="image" content="https://sabio.la/Sabio.png">
+    <link rel="shortcut icon" href="https://sabio.la/Sabio.png">
+    <link rel="icon" type="image/png" href="https://sabio.la/Sabio.png" />
+    <!-- Do Not Change the HTML title or anything between this line and the line with the 💘's -->
+    <title>Tech Cos</title>
+    <link href="https://pw.sabio.la/dist/all-site.css" rel="stylesheet" />
+    <script src="https://pw.sabio.la/api/js/site"></script>
+    <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+
+    <script src="usersService.js"></script>
+    <!-- #endregion -->
+    <!-- I 💘 Code, You 💘 Code, We all 💘 Code -->
+
+    <!-- 💡 All your CSS in here -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <div class="container-fluid">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="home" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="people" href="#">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="blogs" href="#">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="techCos" href="#">Tech Co.</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="jobs" href="#">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="events" href="#">Events</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row">
+            <li class="nav-item">
+                <a class="nav-link" id="logout" aria-label="logout">Logout</a>
+            </li>
+
+            <li class="nav-item"></li>
+            <a class="nav-link" id="userNameAndId" aria-label="logout"></a>
+            </li>
+            <li class="nav-item">
+                <img class="rounded" style="margin-top: auto; height: 40px;" id="avatarImg">
+            </li>
+            <div class="d-flex justify-content-center d-none" id="status">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+    </div>
+    </li>
+    </ul>
+    </div>
+
+</nav>
+
+<body class="sabio" data-ins="pw-00"
+    style="background-image: url(https://img.freepik.com/premium-photo/grunge-wall-highly-detailed-textured-background-with-space-your-projects_970631-295.jpg); background-repeat: no-repeat; background-size: cover">
+    >
+    <!-- Do Not Edit or Remove this nav element -->
+    <nav class="d-none do-not-remove navbar navbar-expand-md navbar-dark bg-dark sabio"></nav>
+
+
+    <div class="text-center">
+        <h1 class="text-center" style="color: #66d9ff;">The Tech Companies Page</h1>
+        <button id="showForm" type="submit" class="m-2 btn btn-dark" style="color:#66d9ff">Show Add Companies
+            Form</button>
+        <form id="form" role="search">
+            <input type="search" class="mt-1" id="searchInput" placeholder="Search..."
+                style="border: 2px solid #66d9ff;">
+            <button class="btn btn-dark mb-1" style="color:#66d9ff" id="searchBtn">Search</button>
+            <button class="btn btn-dark mb-1 d-none" style="color:#66d9ff" id="showAllJobs">Show All
+                Companies</button>
+        </form>
+    </div>
+    <div class="d-flex justify-content-center d-none" id="status">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+
+    <div class="container formContainer mt-1 d-none">
+        <div id="formData" class="row">
+            <form class="row g-3 m-1">
+                <div class="col-md-6">
+                    <label for="name" class="form-label" style="color: #66d9ff;">Name</label>
+                    <input type="text" class="form-control" id="name" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="profile" class="form-label" style="color: #66d9ff;">Profile</label>
+                    <input type="text" class="form-control" id="profile" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="headline" class="form-label" style="color: #66d9ff;">Headline</label>
+                    <input type="text" class="form-control" id="headline" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="summary" class="form-label" style="color: #66d9ff;">Summary</label>
+                    <input type="text" class="form-control" id="summary" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <label for="contactInformation" class="form-label" style="color: #66d9ff;">Contact
+                        Information</label>
+                    <input type="text" class="form-control" id="contactInformation" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6 d-none">
+                    <label for="images" class="form-label" style="color: #66d9ff;">Images</label>
+                    <input value="null" type="text" class="form-control" id="images" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6 d-none">
+                    <label for="urls" class="form-label" style="color: #66d9ff;">Urls</label>
+                    <input value="null" type="text" class="form-control" id="urls" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="tags" class="form-label" style="color: #66d9ff;">Tags</label>
+                    <input type="text" class="form-control" id="tags" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6 d-none">
+                    <label for="friendIds" class="form-label" style="color: #66d9ff;">friendIds</label>
+                    <input value="null" type="text" class="form-control" id="friendIds"
+                        style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="slug" class="form-label" style="color: #66d9ff;">Slug</label>
+                    <input type="text" class="form-control" id="slug" style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-md-6 d-none">
+                    <label for="statusId" class="form-label" style="color: #66d9ff;">StatusId</label>
+                    <input type="text" class="form-control" id="statusId" value="Active"
+                        style="border: 2px solid #66d9ff;">
+                </div>
+                <div class="col-12">
+                    <button id="submit" type="submit" class="btn btn-dark" style="color:#66d9ff">Submit New Company
+                    </button>
+                    <button id="hideForm" type="submit" class="btn btn-dark" style="color:#66d9ff">Hide Add
+                        Companies
+                        Form</button>
+                    <button id="submitUpdate" type="submit" class="btn btn-dark d-none" style="color:#66d9ff">Submit
+                        Updated Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center" id="card-row">
+
+        </div>
+    </div>
+    <div class="container ajax sabio d-none"></div>
+
+
+    <!-- Do Not Edit or Remove this footer element -->
+    <footer class=" d-none container-fluid footer mx-auto  fb-targert sabio">
+    </footer>
+
+    <!--👇🏻 All your JavaScript code goes below here inside this script tag 👇🏻 -->
+    <script id="candidateCode">
+        function startUp() {
+            getCurrentUser()
+            clickHandlers()
+        }
+        function clickHandlers() {
+            $("#logout").on("click", userLogout)
+
+            $("#hideForm").on("click", (e) => {
+                e.preventDefault()
+                $(".formContainer").addClass("d-none")
+                $("#hideForm").addClass("d-none")
+                $("#showForm").removeClass("d-none")
+            });
+            $("#showForm").on("click", (e) => {
+                e.preventDefault()
+                $(".formContainer").removeClass("d-none")
+                $("#hideForm").removeClass("d-none")
+                $("#showForm").addClass("d-none")
+
+            });
+            $("#people").on("click", () => {
+                window.location.href = "friends.html"
+            })
+            $("#blogs").on("click", () => {
+                window.location.href = "blogs.html"
+            })
+            $("#techCos").on("click", () => {
+                window.location.href = "techCos.html"
+            })
+            $("#jobs").on("click", () => {
+                window.location.href = "jobs.html"
+            })
+        }
+
+        //*******Putting photo in NAVBAR**********//
+        function getById(id) {
+            usersService.getById(id).then(onSuccessgetById).catch(onErrorgetById)
+        }
+        function onSuccessgetById(response) {
+            let imgUrl = response.data.item.avatarUrl
+            $('#avatarImg').attr("src", imgUrl)
+        }
+        function onErrorgetById(err) {
+            console.error(err)
+        }
+        //*******Putting ID in NAVBAR and name in H1**********//
+        function getCurrentUser() {
+            $('#status').removeClass('d-none')
+            usersService.current().then(onSuccessGetUser).catch(onErrorGetUser)
+        }
+        function onSuccessGetUser(response) {
+            console.log(response)
+            var id = response.data.item.id
+            getById(id)
+            $('#userNameAndId').text(`${response.data.item.name}: ${response.data.item.id}`)
+            $('#status').addClass('d-none')
+
+        }
+        function onErrorGetUser(err) {
+            console.error(err)
+        }
+        //*******User Logout**********//
+        function userLogout() {
+            console.log("clicked")
+            // e.preventDefault()
+            usersService.userLogout().then(onSuccessLogout).catch(onErrorLogout)
+        }
+
+        function onSuccessLogout(response) {
+            alert("Logout Successful")
+            window.location.href = "login_2.html"
+            console.log("success", response)
+        }
+
+        function onErrorLogout(err) {
+            alert("User does not exist :(")
+            console.error(err)
+        }
+
+
+    </script>
+
+</html>
